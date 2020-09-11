@@ -1,0 +1,17 @@
+HTTP/1.1 302 Moved Temporarily
+Server: nginx
+Date: Fri, 14 Feb 2020 16:09:19 GMT
+Content-Type: text/html
+Content-Length: 138
+Connection: close
+Location: https://www.sina.com.cn/
+X-Via-CDN: f=edge,s=ctc.yongfeng.union.102.nb.sinaedge.com,c=123.116.97.73;
+X-Via-Edge: 15816965597074961747b662410ac6156ccbf
+
+<html>
+<head><title>302 Found</title></head>
+<body>
+<center><h1>302 Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
