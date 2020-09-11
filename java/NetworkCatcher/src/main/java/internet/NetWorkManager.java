@@ -1,7 +1,9 @@
 package internet;
 
 import base.Callback;
+import base.ThreadManager;
 import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import utils.Utils;
 
 import java.io.BufferedReader;
@@ -12,7 +14,21 @@ import java.net.URLConnection;
 
 public class NetWorkManager {
 
-    public void sendGet(@NotNull String url, @NotNull Callback<String> callback) {
+    // 做个builder，依次填入信息，最后send或者build
+
+    public void sendGet(@NotNull final String url, @NotNull final Callback<String> callback) {
+        Utils.log("send get:" + url);
+        ThreadManager.i().post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onCall(doSendGet(url));
+            }
+        });
+
+    }
+
+    @Nullable
+    private String doSendGet(@NotNull String url) {
         BufferedReader reader = null;
         try {
             URL realUrl = new URL(url);
@@ -29,7 +45,7 @@ public class NetWorkManager {
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-            callback.onCall(sb.toString());
+            return sb.toString();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -41,5 +57,6 @@ public class NetWorkManager {
                 }
             }
         }
+        return null;
     }
 }
