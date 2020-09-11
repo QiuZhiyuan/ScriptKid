@@ -19,7 +19,7 @@ public class Main {
             @Override
             public void onCall(String s) {
                 List<StockDailyEntry> entryList = ResponseParser.parseMoney126(s);
-                Utils.log(entryList == null ? "parse money126 is null" : entryList.toString());
+                Utils.log(entryList == null ? "parse money126 is null" : "stock total:" + entryList.size() + "\n" + entryList.toString());
             }
         });
 

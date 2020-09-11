@@ -4,6 +4,9 @@ import com.sun.istack.internal.NotNull;
 import utils.StockBelongCheck;
 import utils.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UrlProvider {
 
     private static final String REPLACE_PART = "#replace_part#";
@@ -14,7 +17,17 @@ public class UrlProvider {
 
     public static final String MEI_DI_JI_TUAN = "000333";
 
-    public static final String[] TEST_STOCK_CODE = new String[]{GONG_SHANG_YIN_HANG, MEI_DI_JI_TUAN};
+    public static final List<String> TEST_STOCK_CODE = new ArrayList<String>();
+
+    static {
+        for (int i = 3; i <= 4; i++) {
+            for (int j = 0; j <= 9; j++) {
+                for (int k = 0; k <= 9; k++) {
+                    TEST_STOCK_CODE.add("601" + i + j + k);
+                }
+            }
+        }
+    }
 
     private volatile static UrlProvider sInstance;
 
@@ -33,7 +46,7 @@ public class UrlProvider {
     private UrlProvider() {
     }
 
-    public String getMoney126(@NotNull String... stockCodes) {
+    public String getMoney126(@NotNull List<String> stockCodes) {
         StringBuilder replacePart = new StringBuilder();
         for (String code : stockCodes) {
             StockBelongCheck.ExchangePlace place = StockBelongCheck.check(code);
