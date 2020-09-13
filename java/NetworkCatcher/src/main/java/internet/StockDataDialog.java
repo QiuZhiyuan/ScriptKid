@@ -9,12 +9,12 @@ import utils.Utils;
 import java.io.File;
 import java.util.List;
 
-public class StockDataDownloader {
+public class StockDataDialog {
 
     @NotNull
     private final NetworkManager mNetworkManager;
 
-    public StockDataDownloader() {
+    public StockDataDialog() {
         this.mNetworkManager = new NetworkManager();
     }
 
@@ -30,8 +30,8 @@ public class StockDataDownloader {
         });
     }
 
-    public void getDataFromMoney163() {
-        final String path = UrlProvider.i().getMoney163("601398", "19000101", "20200911");
-        mNetworkManager.download(path, new File("StockStorage/601398.csv"));
+    public void getDataFromMoney163(@NotNull String stockCode, @NotNull String startDate, @NotNull String endDate, @NotNull File targetFile) {
+        final String path = UrlProvider.i().getMoney163(stockCode, startDate, endDate);
+        mNetworkManager.download(path, targetFile);
     }
 }

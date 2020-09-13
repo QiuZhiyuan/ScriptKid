@@ -6,7 +6,6 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import utils.Utils;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -77,7 +76,6 @@ public class NetworkManager {
                 fileOutputStream.write(buffer, 0, byteRead);
             }
             Utils.log("Total download:" + (byteSum / 1024) + "kb");
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

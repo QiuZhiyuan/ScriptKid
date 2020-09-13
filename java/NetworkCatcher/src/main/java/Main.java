@@ -1,21 +1,23 @@
 import com.sun.istack.internal.NotNull;
-import internet.NetworkManager;
-import internet.StockDataDownloader;
 import utils.Utils;
 
 public class Main {
 
+    @NotNull
+    private final CsvDataHandler mCsvHandler;
+
     private Main() {
-        this.mNetworkManager = new NetworkManager();
+        mCsvHandler = new CsvDataHandler();
     }
 
     public static void main(String[] args) {
         Utils.log("Hello World!");
-        StockDataDownloader downloader = new StockDataDownloader();
-        downloader.getDataFromMoney163();
+        Main main = new Main();
+        main.start();
     }
 
-    @NotNull
-    private final NetworkManager mNetworkManager;
+    private void start() {
+        mCsvHandler.handleStockByCode("601398");
+    }
 
 }

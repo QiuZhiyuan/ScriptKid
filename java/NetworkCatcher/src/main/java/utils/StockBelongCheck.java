@@ -12,7 +12,7 @@ public final class StockBelongCheck {
         SHANG_HAI_A("60"),
         SHANG_HAI_B("900"),
         SHANG_HAI_FENG_BI_FUND("500"),
-        UNKNOWN("?"),
+        UNKNOWN("Unknown"),
         ;
         String mStartCode;
 

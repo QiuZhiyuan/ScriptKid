@@ -3,12 +3,14 @@ package internet.url;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import utils.StockBelongCheck;
-import utils.Utils;
+import utils.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UrlProvider {
+
+    private static final String TAG = UrlProvider.class.getSimpleName();
 
     private static final String REPLACE_PART_1 = "#replace_part_1#";
     private static final String REPLACE_PART_2 = "#replace_part_2#";
@@ -58,6 +60,7 @@ public class UrlProvider {
         return BASE_URL_MONEY_126.replace(REPLACE_PART_1, replacePart.toString());
     }
 
+    @NotNull
     public String getMoney163(@NotNull String stockCode, @NotNull String startDate, @NotNull String endDate) {
         String wyCode = getWangYiStockCode(stockCode);
         return BASE_URL_MONRY_163.replace(REPLACE_PART_1, wyCode)
@@ -65,7 +68,7 @@ public class UrlProvider {
                 .replace(REPLACE_PART_3, endDate);
     }
 
-    @Nullable
+    @NotNull
     private String getWangYiStockCode(@NotNull String stockCode) {
         StockBelongCheck.ExchangePlace place = StockBelongCheck.check(stockCode);
         String start;
@@ -79,7 +82,7 @@ public class UrlProvider {
                 start = "1";
                 break;
             default:
-                return null;
+                throw new RuntimeException(TAG + ":Unsupported stock code in wang yi");
         }
         return start + stockCode;
     }
