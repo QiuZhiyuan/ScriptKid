@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import utils.Utils;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,6 +36,8 @@ public class CsvDataEntry {
     // 开盘价
     private final float mOpenPrice;
 
+    private final float mBeforeClosePrice;
+
     // 涨跌额
     private final float mUpAndDownPrice;
 
@@ -51,14 +54,14 @@ public class CsvDataEntry {
     private final float mDonePrice;
 
     // 总市值（The total market capitalization）
-    private final String mTotalMarketCap;
+    private final float mTotalMarketCap;
 
     // 流通市值（Circulation market value）
-    private final String mCirculationMarketValue;
+    private final float mCirculationMarketValue;
 
     public CsvDataEntry(Date date, String code, String name, float closePrice, float highPrice, float lowPrice,
-                        float openPrice, float upAndDownPrice, float upAndDownPercent, float turnoverRate,
-                        float doneVolume, float donePrice, String totalMarketCap, String circulationMarketValue) {
+                        float openPrice, float beforeClosePrice, float upAndDownPrice, float upAndDownPercent, float turnoverRate,
+                        float doneVolume, float donePrice, float totalMarketCap, float circulationMarketValue) {
         this.mDate = date;
         this.mCode = code;
         this.mName = name;
@@ -67,6 +70,7 @@ public class CsvDataEntry {
         this.mHighPrice = highPrice;
         this.mLowPrice = lowPrice;
         this.mOpenPrice = openPrice;
+        this.mBeforeClosePrice = beforeClosePrice;
         this.mUpAndDownPrice = upAndDownPrice;
         this.mUpAndDownPercent = upAndDownPercent;
         this.mTurnoverRate = turnoverRate;
@@ -80,10 +84,10 @@ public class CsvDataEntry {
     @Override
     public String toString() {
         return "date:" + mDate + " code:" + mCode + " name:" + mName + " closePrice:" + mClosePrice + " highPrice:" +
-                mHighPrice + " lowPrice:" + mLowPrice + " openPrice:" + mOpenPrice + " upAndDownPrice:" +
-                mUpAndDownPrice + " upAndDownPercent:" + mUpAndDownPercent + " turnoverRate:" + mTurnoverRate +
-                " doneVolume:" + mDonePrice + " totalMarketCap" + mTotalMarketCap + " circulationMarketValue" +
-                mCirculationMarketValue;
+                mHighPrice + " lowPrice:" + mLowPrice + " openPrice:" + mOpenPrice + "beforeClosePrice:" +
+                mBeforeClosePrice + " upAndDownPrice:" + mUpAndDownPrice + " upAndDownPercent:" + mUpAndDownPercent +
+                " turnoverRate:" + mTurnoverRate + " doneVolume:" + mDoneVolume + " donePrice:" + mDonePrice +
+                " totalMarketCap:" + mTotalMarketCap + " circulationMarketValue:" + mCirculationMarketValue;
     }
 
     @Nullable
@@ -91,21 +95,23 @@ public class CsvDataEntry {
         String[] elements = line.split(",");
         try {
             Date date = Utils.parseFromStr(elements[0]);
-            String code = elements[1];
+            String code = elements[1].substring(1);
             String name = elements[2];
             float closePrice = Float.parseFloat(elements[3]);
             float highPrice = Float.parseFloat(elements[4]);
             float lowPrice = Float.parseFloat(elements[5]);
             float openPrice = Float.parseFloat(elements[6]);
-            float upAndDownPrice = Float.parseFloat(elements[7]);
-            float upAndDownPercent = Float.parseFloat(elements[8]);
-            float turnoverRate = Float.parseFloat(elements[9]);
-            float doneVolume = Float.parseFloat(elements[10]);
-            float donePrice = Float.parseFloat(elements[11]);
-            String totalMarketCap = elements[12];
-            String circulationMarketValue = elements[13];
-            return new CsvDataEntry(date, code, name, closePrice, highPrice, lowPrice, openPrice, upAndDownPrice,
-                    upAndDownPercent, turnoverRate, doneVolume, donePrice, totalMarketCap, circulationMarketValue);
+            float beforeClosePrice = Float.parseFloat(elements[7]);
+            float upAndDownPrice = Float.parseFloat(elements[8]);
+            float upAndDownPercent = Float.parseFloat(elements[9]);
+            float turnoverRate = Float.parseFloat(elements[10]);
+            float doneVolume = Float.parseFloat(elements[11]);
+            float donePrice = Float.parseFloat(elements[12]);
+            float totalMarketCap = Float.parseFloat(elements[13]);
+            float circulationMarketValue = Float.parseFloat(elements[14]);
+            return new CsvDataEntry(date, code, name, closePrice, highPrice, lowPrice, openPrice, beforeClosePrice,
+                    upAndDownPrice, upAndDownPercent, turnoverRate, doneVolume, donePrice, totalMarketCap,
+                    circulationMarketValue);
 
         } catch (Exception e) {
 //            Utils.log(TAG + ":" + e);

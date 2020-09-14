@@ -1,9 +1,7 @@
-import base.ThreadManager;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import entry.CsvDataEntry;
 import internet.StockDataDialog;
-import sun.tools.jstat.Literal;
 import utils.Utils;
 
 import java.io.*;
@@ -26,14 +24,18 @@ public class CsvDataHandler {
     public void handleStockByCode(@NotNull final String stockCode) {
         Utils.log("Start handle stock code" + stockCode);
         File file = getStoreFile(createFileName(stockCode, END_DATE));
-        if (!file.exists()) {
+        if (shouldDownloadFile(file)) {
             mDownloader.getDataFromMoney163(stockCode, START_DATE, END_DATE, file);
         } else {
             Utils.log(file.getName() + " is exist");
         }
 
         List<CsvDataEntry> entryList = parseCsvFile(file);
-        Utils.log("Parsed:" + entryList.size());
+        if (entryList != null) {
+            Utils.log("Parsed:" + entryList.size());
+        } else {
+            Utils.log("Parsed result is null");
+        }
         Utils.log(entryList.get(0).toString());
     }
 
@@ -48,6 +50,11 @@ public class CsvDataHandler {
 
     private String createFileName(@NotNull String stockCode, @NotNull String endDate) {
         return stockCode + "-" + endDate + ".csv";
+    }
+
+    private boolean shouldDownloadFile(@NotNull File file) {
+        // TODO 判断文件创建时间与更新时间，如果有修改历史则重新下载
+        return !file.exists();
     }
 
     @Nullable
