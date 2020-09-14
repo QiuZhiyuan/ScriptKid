@@ -1,5 +1,6 @@
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import entry.AvgStateEntry;
 import entry.CsvLineEntry;
 import internet.StockDataDialog;
 import statistics.ComputeAvgPriceHelper;
@@ -14,6 +15,8 @@ public class CsvDataHandler {
     private static final String STORE_PATH = "StockStorage/";
     private static final String START_DATE = "19000101";
     private static final String END_DATE = "20200912";
+    // 平均阶段，5日、100日、350日
+    private static final int[] AVG_STATE = new int[]{5, 100, 350};
 
     private final StockDataDialog downloader;
 
@@ -38,7 +41,11 @@ public class CsvDataHandler {
         } else {
             Utils.log("Parsed result is null");
         }
+
+        // 计算日平均
         ComputeAvgPriceHelper computeAvgPriceHelper = new ComputeAvgPriceHelper(lineEntryList);
+        List<AvgStateEntry> avgStateEntryList = computeAvgPriceHelper.computeStateAvgPrice(AVG_STATE);
+        Utils.log(avgStateEntryList.toString());
     }
 
     @NotNull

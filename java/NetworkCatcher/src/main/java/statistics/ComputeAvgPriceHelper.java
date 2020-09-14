@@ -12,40 +12,44 @@ import java.util.*;
  */
 public class ComputeAvgPriceHelper {
 
-    // 平均阶段，5日、100日、350日
-    private static final int[] AVG_STATE = new int[]{5, 100, 350};
+    private final List<CsvLineEntry> lineEntryList;
 
-    private Map<Integer, List<AvgStateEntry>> avgStateMap = new HashMap<>();
+    public ComputeAvgPriceHelper(List<CsvLineEntry> lineEntryList) {
+        this.lineEntryList = lineEntryList;
+    }
 
-    public ComputeAvgPriceHelper(List<CsvLineEntry> lineEntry) {
-        sortByDate(lineEntry);
-        for (int state : AVG_STATE) {
-            computeStateAvg(state, lineEntry);
-        }
-        Utils.log(avgStateMap.get(AVG_STATE[1]).toString());
+    public List<AvgStateEntry> computeStateAvgPrice(int[] avgStates) {
+        sortByDate(lineEntryList);
+        return doComputeStateAvgPrice(avgStates);
     }
 
     private void sortByDate(@NotNull List<CsvLineEntry> lineEntryList) {
         lineEntryList.sort(Comparator.comparing(o -> o.date));
     }
 
-    private void computeStateAvg(int state, @NotNull List<CsvLineEntry> lineEntryList) {
+    private List<AvgStateEntry> doComputeStateAvgPrice(int[] avgStates) {
+        long start = System.currentTimeMillis();
         List<AvgStateEntry> avgStateEntryList = new ArrayList<>();
-        for (int i = state - 1; i < lineEntryList.size(); i++) {
-            float avg;
-            int size = avgStateEntryList.size();
-            if (size > 0) {
-                avg = avgStateEntryList.get(size - 1).avg + (lineEntryList.get(i).closePrice -
-                        lineEntryList.get(i - state).closePrice) / state;
-            } else {
-                float sum = 0;
-                for (int j = i; j > i - state; j--) {
-                    sum += lineEntryList.get(j).closePrice;
-                }
-                avg = sum / state;
+        for (int i = 0; i < lineEntryList.size(); i++) {
+            AvgStateEntry avgStateEntry = new AvgStateEntry(lineEntryList.get(i));
+            for (Integer state : avgStates) {
+                float avg = getClosePriceAvg(i, state);
+                avgStateEntry.avgMap.put(state, avg);
             }
-            avgStateEntryList.add(new AvgStateEntry(state, avg, lineEntryList.get(i)));
+            avgStateEntryList.add(avgStateEntry);
         }
-        avgStateMap.put(state, avgStateEntryList);
+        Utils.log("Compute duration:" + (System.currentTimeMillis() - start));
+        return avgStateEntryList;
+    }
+
+    private float getClosePriceAvg(int start, int state) {
+        if (start - state + 1 < 0) {
+            return 0;
+        }
+        float sum = 0;
+        for (int i = start - state + 1; i <= start; i++) {
+            sum += lineEntryList.get(i).closePrice;
+        }
+        return sum / state;
     }
 }
