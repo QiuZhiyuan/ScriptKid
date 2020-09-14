@@ -32,11 +32,19 @@ public class ComputeAvgPriceHelper {
     private void computeStateAvg(int state, @NotNull List<CsvLineEntry> lineEntryList) {
         List<AvgStateEntry> avgStateEntryList = new ArrayList<>();
         for (int i = state - 1; i < lineEntryList.size(); i++) {
-            float sum = 0;
-            for (int j = i; j > i - state; j--) {
-                sum += lineEntryList.get(j).closePrice;
+            float avg;
+            int size = avgStateEntryList.size();
+            if (size > 0) {
+                avg = avgStateEntryList.get(size - 1).avg + (lineEntryList.get(i).closePrice -
+                        lineEntryList.get(i - state).closePrice) / state;
+            } else {
+                float sum = 0;
+                for (int j = i; j > i - state; j--) {
+                    sum += lineEntryList.get(j).closePrice;
+                }
+                avg = sum / state;
             }
-            avgStateEntryList.add(new AvgStateEntry(state, sum / state, lineEntryList.get(i)));
+            avgStateEntryList.add(new AvgStateEntry(state, avg, lineEntryList.get(i)));
         }
         avgStateMap.put(state, avgStateEntryList);
     }
