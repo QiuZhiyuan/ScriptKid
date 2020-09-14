@@ -4,10 +4,10 @@ import utils.Utils;
 public class Main {
 
     @NotNull
-    private final CsvDataHandler mCsvHandler;
+    private final CsvDataHandler csvHandler;
 
     private Main() {
-        mCsvHandler = new CsvDataHandler();
+        csvHandler = new CsvDataHandler();
     }
 
     public static void main(String[] args) {
@@ -17,7 +17,7 @@ public class Main {
     }
 
     private void start() {
-        mCsvHandler.handleStockByCode("601398");
+        csvHandler.handleStockByCode("601398");
     }
 
 }

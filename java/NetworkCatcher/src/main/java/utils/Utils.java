@@ -19,4 +19,8 @@ public final class Utils {
     public static Date parseFromStr(@NotNull String str) throws ParseException {
         return sSimpleDateFormat.parse(str);
     }
+
+    public static String dateToString(@NotNull Date date) {
+        return sSimpleDateFormat.format(date);
+    }
 }

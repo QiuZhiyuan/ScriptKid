@@ -1,9 +1,7 @@
-package internet.url;
+package provider;
 
 import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import utils.StockBelongCheck;
-import utils.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,8 @@
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import entry.CsvDataEntry;
+import entry.CsvLineEntry;
 import internet.StockDataDialog;
+import statistics.ComputeAvgPriceHelper;
 import utils.Utils;
 
 import java.io.*;
@@ -14,10 +15,10 @@ public class CsvDataHandler {
     private static final String START_DATE = "19000101";
     private static final String END_DATE = "20200912";
 
-    private final StockDataDialog mDownloader;
+    private final StockDataDialog downloader;
 
     public CsvDataHandler() {
-        mDownloader = new StockDataDialog();
+        downloader = new StockDataDialog();
     }
 
     @NotNull
@@ -25,18 +26,19 @@ public class CsvDataHandler {
         Utils.log("Start handle stock code" + stockCode);
         File file = getStoreFile(createFileName(stockCode, END_DATE));
         if (shouldDownloadFile(file)) {
-            mDownloader.getDataFromMoney163(stockCode, START_DATE, END_DATE, file);
+            downloader.getDataFromMoney163(stockCode, START_DATE, END_DATE, file);
         } else {
             Utils.log(file.getName() + " is exist");
         }
 
-        List<CsvDataEntry> entryList = parseCsvFile(file);
-        if (entryList != null) {
-            Utils.log("Parsed:" + entryList.size());
+        List<CsvLineEntry> lineEntryList = parseCsvFile(file);
+        if (lineEntryList != null) {
+            Utils.log("Parsed:" + lineEntryList.size());
+            Utils.log(lineEntryList.get(0).toString());
         } else {
             Utils.log("Parsed result is null");
         }
-        Utils.log(entryList.get(0).toString());
+        ComputeAvgPriceHelper computeAvgPriceHelper = new ComputeAvgPriceHelper(lineEntryList);
     }
 
     @NotNull
@@ -58,17 +60,17 @@ public class CsvDataHandler {
     }
 
     @Nullable
-    private List<CsvDataEntry> parseCsvFile(@NotNull File file) {
+    private List<CsvLineEntry> parseCsvFile(@NotNull File file) {
         if (!file.exists()) {
             return null;
         }
-        List<CsvDataEntry> entryList = new ArrayList<CsvDataEntry>();
+        List<CsvLineEntry> entryList = new ArrayList<CsvLineEntry>();
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "GB18030"));
             String line;
             while ((line = br.readLine()) != null) {
-                CsvDataEntry entry = CsvDataEntry.fromCsvLine(line);
+                CsvLineEntry entry = CsvLineEntry.fromCsvLine(line);
                 if (entry != null) {
                     entryList.add(entry);
                 }

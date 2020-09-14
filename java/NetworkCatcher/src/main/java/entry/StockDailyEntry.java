@@ -2,27 +2,29 @@ package entry;
 
 import com.sun.istack.internal.NotNull;
 
+import java.util.Date;
+
 public class StockDailyEntry {
 
     @NotNull
-    private final String mCode;
+    private final String code;
     @NotNull
-    private final String mName;
+    private final String name;
     @NotNull
-    private final String mTime;
+    private final String time;
     @NotNull
-    private final float mPrice;
+    private final float price;
 
     public StockDailyEntry(@NotNull String code, @NotNull String name, @NotNull String time, @NotNull float price) {
-        this.mCode = code;
-        this.mName = name;
-        this.mTime = time;
-        this.mPrice = price;
+        this.code = code;
+        this.name = name;
+        this.time = time;
+        this.price = price;
     }
 
 
     @Override
     public String toString() {
-        return "code:" + mCode + " name:" + mName + " time:" + mTime + " price:" + mPrice;
+        return "code:" + code + " name:" + name + " time:" + time + " price:" + price;
     }
 }
