@@ -23,4 +23,8 @@ public final class Utils {
     public static String dateToString(@NotNull Date date) {
         return sSimpleDateFormat.format(date);
     }
+
+    public static float formatPrice(float price) {
+        return Math.round(price * 100) / 100f;
+    }
 }

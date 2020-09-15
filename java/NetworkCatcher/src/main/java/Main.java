@@ -17,7 +17,7 @@ public class Main {
     }
 
     private void start() {
-        csvHandler.handleStockByCode("601398");
+        csvHandler.handleStockByCode("601318");
     }
 
 }

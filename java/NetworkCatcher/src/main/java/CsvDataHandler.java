@@ -1,9 +1,9 @@
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import entry.AvgStateEntry;
 import entry.CsvLineEntry;
 import internet.StockDataDialog;
-import statistics.ComputeAvgPriceHelper;
+import provider.DataProvider;
+import transaction.WeekTransactionBase;
 import utils.Utils;
 
 import java.io.*;
@@ -15,8 +15,7 @@ public class CsvDataHandler {
     private static final String STORE_PATH = "StockStorage/";
     private static final String START_DATE = "19000101";
     private static final String END_DATE = "20200912";
-    // 平均阶段，5日、100日、350日
-    private static final int[] AVG_STATE = new int[]{5, 100, 350};
+
 
     private final StockDataDialog downloader;
 
@@ -37,15 +36,12 @@ public class CsvDataHandler {
         List<CsvLineEntry> lineEntryList = parseCsvFile(file);
         if (lineEntryList != null) {
             Utils.log("Parsed:" + lineEntryList.size());
-            Utils.log(lineEntryList.get(0).toString());
+//            Utils.log(lineEntryList.get(0).toString());
+            DataProvider.i().setCsvLines(stockCode, lineEntryList);
+            new WeekTransactionBase(stockCode).start();
         } else {
             Utils.log("Parsed result is null");
         }
-
-        // 计算日平均
-        ComputeAvgPriceHelper computeAvgPriceHelper = new ComputeAvgPriceHelper(lineEntryList);
-        List<AvgStateEntry> avgStateEntryList = computeAvgPriceHelper.computeStateAvgPrice(AVG_STATE);
-        Utils.log(avgStateEntryList.toString());
     }
 
     @NotNull
@@ -82,8 +78,6 @@ public class CsvDataHandler {
                     entryList.add(entry);
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
