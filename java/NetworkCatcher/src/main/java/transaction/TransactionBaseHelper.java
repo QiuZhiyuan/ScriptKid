@@ -10,7 +10,7 @@ import java.util.List;
  * 交易策略基类，用于制定交易策略，记录每次交易的内容，计算现金与持仓
  * 需要遍历列表，在适当的时候进行交易
  */
-public abstract class TransactionBaseImpl {
+public abstract class TransactionBaseHelper {
 
     public static final float TRANSACTION_TAX_RATE = 0.0028f;
 
@@ -21,7 +21,7 @@ public abstract class TransactionBaseImpl {
     // 现金
     protected float cashValue;
 
-    public TransactionBaseImpl(float cashValue, String stockCode) {
+    public TransactionBaseHelper(float cashValue, String stockCode) {
         this.cashValue = cashValue;
         this.stockCode = stockCode;
     }

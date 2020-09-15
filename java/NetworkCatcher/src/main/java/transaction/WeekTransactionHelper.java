@@ -12,7 +12,7 @@ import java.util.List;
  * 测试交易策略，用于测试
  * 每周五买入，每周一卖出
  */
-public class WeekTransactionBase extends TransactionBaseImpl {
+public class WeekTransactionHelper extends TransactionBaseHelper {
 
     private static final float holdValue = 100000;
 
@@ -20,7 +20,7 @@ public class WeekTransactionBase extends TransactionBaseImpl {
 
     private static final float SELL_RATE = 1f;
 
-    public WeekTransactionBase(String stockCode) {
+    public WeekTransactionHelper(String stockCode) {
         super(holdValue, stockCode);
     }
 

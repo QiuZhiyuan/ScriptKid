@@ -3,7 +3,7 @@ import com.sun.istack.internal.Nullable;
 import entry.CsvLineEntry;
 import internet.StockDataDialog;
 import provider.DataProvider;
-import transaction.WeekTransactionBase;
+import transaction.WeekTransactionHelper;
 import utils.Utils;
 
 import java.io.*;
@@ -38,7 +38,7 @@ public class CsvDataHandler {
             Utils.log("Parsed:" + lineEntryList.size());
 //            Utils.log(lineEntryList.get(0).toString());
             DataProvider.i().setCsvLines(stockCode, lineEntryList);
-            new WeekTransactionBase(stockCode).start();
+            new WeekTransactionHelper(stockCode).start();
         } else {
             Utils.log("Parsed result is null");
         }
