@@ -2,6 +2,8 @@ package provider;
 
 import com.sun.istack.internal.NotNull;
 import utils.StockBelongCheck;
+import utils.TextUtils;
+import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +18,6 @@ public class UrlProvider {
     private static final String BASE_URL_MONEY_126 = "http://api.money.126.net/data/feed/" + REPLACE_PART_1 + "money.api";
     private static final String BASE_URL_MONRY_163 = "http://quotes.money.163.com/service/chddata.html?code=" +
             REPLACE_PART_1 + "&start=" + REPLACE_PART_2 + "&end=" + REPLACE_PART_3;
-
-    public static final String GONG_SHANG_YIN_HANG = "601398";
-    public static final String MEI_DI_JI_TUAN = "000333";
 
     public static final List<String> TEST_STOCK_CODE = new ArrayList<String>();
 
@@ -52,6 +51,9 @@ public class UrlProvider {
     public String getMoney126(@NotNull String... stockCodes) {
         StringBuilder replacePart = new StringBuilder();
         for (String code : stockCodes) {
+            if (TextUtils.isNullOrEmpty(code)) {
+                continue;
+            }
             String wyCode = getWangYiStockCode(code);
             replacePart.append(wyCode).append(",");
         }
@@ -80,7 +82,7 @@ public class UrlProvider {
                 start = "1";
                 break;
             default:
-                throw new RuntimeException(TAG + ":Unsupported stock code in wang yi");
+                throw new RuntimeException(TAG + ":Unsupported stock code in wang yi:" + stockCode);
         }
         return start + stockCode;
     }

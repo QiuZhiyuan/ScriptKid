@@ -7,13 +7,13 @@ import java.util.Date;
 public class StockDailyEntry {
 
     @NotNull
-    private final String code;
+    public final String code;
     @NotNull
-    private final String name;
+    public final String name;
     @NotNull
-    private final String time;
+    public final String time;
     @NotNull
-    private final float price;
+    public final float price;
 
     public StockDailyEntry(@NotNull String code, @NotNull String name, @NotNull String time, @NotNull float price) {
         this.code = code;

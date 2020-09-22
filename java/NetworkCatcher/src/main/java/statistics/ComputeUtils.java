@@ -10,7 +10,7 @@ import java.util.List;
 public class ComputeUtils {
 
     // 平均阶段，5日、100日、350日
-    public static final int[] AVG_STATE = new int[]{5, 100, 350};
+    public static final int[] AVG_STATE = new int[]{5, 30, 100, 350};
 
     /**
      * 计算日平均

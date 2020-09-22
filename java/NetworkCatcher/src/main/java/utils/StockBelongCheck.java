@@ -14,14 +14,14 @@ public final class StockBelongCheck {
         SHANG_HAI_FENG_BI_FUND("500"),
         UNKNOWN("Unknown"),
         ;
-        String mStartCode;
+        public String startCode;
 
         ExchangePlace(@NotNull String startCode) {
-            mStartCode = startCode;
+            this.startCode = startCode;
         }
 
         boolean belong(@NotNull String stockCode) {
-            return stockCode.startsWith(mStartCode);
+            return stockCode.startsWith(startCode);
         }
     }
 

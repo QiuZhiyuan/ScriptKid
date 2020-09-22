@@ -1,8 +1,11 @@
+package statistics;
+
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import entry.CsvLineEntry;
 import internet.StockDataDialog;
 import provider.DataProvider;
+import transaction.AvgRuleTransactionHelper;
 import transaction.WeekTransactionHelper;
 import utils.Utils;
 
@@ -38,7 +41,8 @@ public class CsvDataHandler {
             Utils.log("Parsed:" + lineEntryList.size());
 //            Utils.log(lineEntryList.get(0).toString());
             DataProvider.i().setCsvLines(stockCode, lineEntryList);
-            new WeekTransactionHelper(stockCode).start();
+//            new WeekTransactionHelper(stockCode).start();
+            new AvgRuleTransactionHelper(stockCode).start();
         } else {
             Utils.log("Parsed result is null");
         }

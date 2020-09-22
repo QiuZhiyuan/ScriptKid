@@ -24,10 +24,10 @@ public class ComputeLineEntry extends CsvLineEntry {
 
     @Override
     public String toString() {
-        return "AvgStateEntry{" +
+        return "ComputeLineEntry{" +
                 "date=" + Utils.dateToString(date) + " " + date.getDay() +
                 ", avgPrice=" + avgPriceMap.toString() +
                 ", price=" + closePrice +
-                '}' + "\n";
+                '}';
     }
 }

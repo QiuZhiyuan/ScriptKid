@@ -19,14 +19,11 @@ public class StockDataDialog {
     }
 
 
-    public void getDataFromMoney126() {
-        final String path = UrlProvider.i().getMoney126(UrlProvider.GONG_SHANG_YIN_HANG);
-        networkManager.sendGet(path, new Callback<String>() {
-            @Override
-            public void onCall(String s) {
-                List<StockDailyEntry> entryList = ResponseParser.parseMoney126(s);
-                Utils.log(entryList == null ? "parse money126 is null" : "stock total:" + entryList.size() + "\n" + entryList.toString());
-            }
+    public void getDataFromMoney126(Callback<List<StockDailyEntry>> callback, String... stockCode) {
+        final String path = UrlProvider.i().getMoney126(stockCode);
+        networkManager.sendGet(path, s -> {
+            List<StockDailyEntry> entryList = ResponseParser.parseMoney126(s);
+            callback.onCall(entryList);
         });
     }
 

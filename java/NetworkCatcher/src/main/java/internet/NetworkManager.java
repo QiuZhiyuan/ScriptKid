@@ -17,13 +17,7 @@ public class NetworkManager {
 
     public void sendGet(@NotNull final String path, @NotNull final Callback<String> callback) {
         Utils.log("send get:" + path);
-        ThreadManager.i().post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onCall(doSendGet(path));
-            }
-        });
-
+        callback.onCall(doSendGet(path));
     }
 
     @Nullable

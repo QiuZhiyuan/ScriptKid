@@ -5,6 +5,7 @@ import com.sun.istack.internal.Nullable;
 import entry.ComputeLineEntry;
 import entry.CsvLineEntry;
 import statistics.ComputeUtils;
+import utils.Utils;
 
 import java.util.*;
 
@@ -33,6 +34,9 @@ public class DataProvider {
         // 按日期升序排列
         csvLines.sort(Comparator.comparing(o -> o.date));
         computeResultMap.put(stockCode, ComputeUtils.computeAvgs(csvLines));
+        for (ComputeLineEntry entry : computeResultMap.get(stockCode)) {
+            Utils.log(entry.toString());
+        }
     }
 
     @Nullable

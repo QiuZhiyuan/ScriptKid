@@ -1,7 +1,9 @@
 package transaction;
 
-import entry.CsvLineEntry;
+import com.sun.istack.internal.Nullable;
+import entry.ComputeLineEntry;
 import entry.TransactionEntry;
+import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,20 +20,24 @@ public abstract class TransactionBaseHelper {
 
     protected List<TransactionEntry> transactionList = new ArrayList<>();
 
+    private final List<ComputeLineEntry> computeLineEntryList;
+
     // 现金
     protected float cashValue;
 
     public TransactionBaseHelper(float cashValue, String stockCode) {
         this.cashValue = cashValue;
         this.stockCode = stockCode;
+        this.computeLineEntryList = getComputeLineEntryList();
     }
 
     /**
-     * @param entry   当天价格
+     * @param index   当天价格
      * @param buyRate 买入仓位百分比
      * @return 现金剩余
      */
-    public float buy(CsvLineEntry entry, float buyRate) {
+    public float buy(int index, float buyRate) {
+        final ComputeLineEntry entry = computeLineEntryList.get(index);
         final int amount = Math.round(cashValue * buyRate / entry.closePrice);
         final float value = amount * entry.closePrice;
         final float tax = value * TRANSACTION_TAX_RATE;
@@ -42,11 +48,12 @@ public abstract class TransactionBaseHelper {
     }
 
     /**
-     * @param entry    当天价格
+     * @param index    当天价格
      * @param sellRate 卖出仓位百分比
      * @return 现金剩余
      */
-    public float sell(CsvLineEntry entry, float sellRate) {
+    public float sell(int index, float sellRate) {
+        final ComputeLineEntry entry = computeLineEntryList.get(index);
         final int amount = Math.round(getRemainAmount() * sellRate);
         final float value = entry.closePrice * amount;
         final float tax = value * TRANSACTION_TAX_RATE;
@@ -85,13 +92,40 @@ public abstract class TransactionBaseHelper {
      *
      * @return 现金+持仓
      */
-    public float getTotalValue(CsvLineEntry entry) {
+    public float getTotalValue(ComputeLineEntry entry) {
         return cashValue + getRemainAmount() * entry.closePrice;
+    }
+
+    @Nullable
+    protected ComputeLineEntry getComputeLineEntry(int index) {
+        if (index < 0 || index >= computeLineEntryList.size()) {
+            return null;
+        }
+        return computeLineEntryList.get(index);
+    }
+
+    protected int getComputeLineSize() {
+        return computeLineEntryList.size();
+    }
+
+    protected void logInfo() {
+        for (int i = 0; i < transactionList.size(); i++) {
+            logTransaction(transactionList.get(i));
+        }
+        Utils.log("Total transaction count:" + transactionList.size());
+        Utils.log("Tax cost:" + getTaxCost());
+        Utils.log("totalValue:" + getTotalValue(getComputeLineEntry(getComputeLineSize() - 1)));
+    }
+
+    protected void logTransaction(TransactionEntry entry) {
+        Utils.log(entry.toString());
     }
 
     public abstract void start();
 
-    public abstract boolean shouldBuy(CsvLineEntry entry);
+    public abstract List<ComputeLineEntry> getComputeLineEntryList();
 
-    public abstract boolean shouldSell(CsvLineEntry entry);
+    public abstract boolean shouldBuy(int index);
+
+    public abstract boolean shouldSell(int index);
 }

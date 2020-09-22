@@ -1,7 +1,7 @@
 package transaction;
 
 import entry.ComputeLineEntry;
-import entry.CsvLineEntry;
+import entry.ComputeLineEntry;
 import entry.TransactionEntry;
 import provider.DataProvider;
 import utils.Utils;
@@ -26,31 +26,29 @@ public class WeekTransactionHelper extends TransactionBaseHelper {
 
     @Override
     public void start() {
-        List<ComputeLineEntry> entryList = DataProvider.i().getComputeLines(stockCode);
-
-        for (CsvLineEntry entry : entryList) {
-            if (shouldBuy(entry)) {
-                buy(entry, BUY_RATE);
+        for (int i = 0; i < getComputeLineSize(); i++) {
+            if (shouldBuy(i)) {
+                buy(i, BUY_RATE);
             }
-            if (shouldSell(entry)) {
-                sell(entry, SELL_RATE);
+            if (shouldSell(i)) {
+                sell(i, SELL_RATE);
             }
         }
-        for (TransactionEntry entry : transactionList) {
-            Utils.log(entry.toString());
-        }
-//        Utils.log("Tax cost:" + getTaxCost());
-//        Utils.log("totalValue:" + getTotalValue(entryList.get(entryList.size() - 1)));
-
+        logInfo();
     }
 
     @Override
-    public boolean shouldBuy(CsvLineEntry entry) {
-        return entry.date.getDay() == 5;
+    public List<ComputeLineEntry> getComputeLineEntryList() {
+        return DataProvider.i().getComputeLines(stockCode);
     }
 
     @Override
-    public boolean shouldSell(CsvLineEntry entry) {
-        return entry.date.getDay() == 1;
+    public boolean shouldBuy(int index) {
+        return getComputeLineEntry(index).date.getDay() == 5;
+    }
+
+    @Override
+    public boolean shouldSell(int index) {
+        return getComputeLineEntry(index).date.getDay() == 1;
     }
 }

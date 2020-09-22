@@ -33,10 +33,10 @@ public class ResponseParser {
             while (keyInterable.hasNext()) {
                 String itemKey = keyInterable.next();
                 JSONObject itemObj = jsonObject.getJSONObject(itemKey);
-                code = itemObj.getString("symbol");
-                name = itemObj.getString("name");
-                time = itemObj.getString("time");
-                price = itemObj.getFloat("price");
+                code = itemObj.optString("symbol");
+                name = itemObj.optString("name");
+                time = itemObj.optString("time");
+                price = itemObj.optFloat("price");
                 entryList.add(new StockDailyEntry(code, name, time, price));
             }
             return entryList;

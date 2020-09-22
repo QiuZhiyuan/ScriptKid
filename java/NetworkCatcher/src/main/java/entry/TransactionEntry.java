@@ -1,5 +1,7 @@
 package entry;
 
+import utils.Utils;
+
 import java.util.Date;
 
 public class TransactionEntry {
@@ -35,7 +37,7 @@ public class TransactionEntry {
     @Override
     public String toString() {
         return "TransactionEntry{" +
-                "date=" + date +
+                "date=" + Utils.dateToString(date) +
                 ", price=" + price +
                 ", amount=" + amount +
                 ", tax=" + tax +
