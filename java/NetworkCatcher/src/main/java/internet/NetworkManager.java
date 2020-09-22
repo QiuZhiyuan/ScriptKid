@@ -61,6 +61,8 @@ public class NetworkManager {
         try {
             URL url = new URL(path);
             URLConnection connection = url.openConnection();
+            connection.setConnectTimeout(Utils.REQUEST_TIME_OUT);
+            connection.setReadTimeout(Utils.REQUEST_TIME_OUT);
             inputStream = connection.getInputStream();
             fileOutputStream = new FileOutputStream(file);
             byte[] buffer = new byte[1024];
@@ -70,8 +72,6 @@ public class NetworkManager {
                 fileOutputStream.write(buffer, 0, byteRead);
             }
             Utils.log("Total download:" + (byteSum / 1024) + "kb");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

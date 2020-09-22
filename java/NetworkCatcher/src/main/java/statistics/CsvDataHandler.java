@@ -35,17 +35,17 @@ public class CsvDataHandler {
         } else {
             Utils.log(file.getName() + " is exist");
         }
-
-        List<CsvLineEntry> lineEntryList = parseCsvFile(file);
-        if (lineEntryList != null) {
-            Utils.log("Parsed:" + lineEntryList.size());
-//            Utils.log(lineEntryList.get(0).toString());
-            DataProvider.i().setCsvLines(stockCode, lineEntryList);
-//            new WeekTransactionHelper(stockCode).start();
-            new AvgRuleTransactionHelper(stockCode).start();
-        } else {
-            Utils.log("Parsed result is null");
-        }
+//
+//        List<CsvLineEntry> lineEntryList = parseCsvFile(file);
+//        if (lineEntryList != null) {
+//            Utils.log("Parsed:" + lineEntryList.size());
+////            Utils.log(lineEntryList.get(0).toString());
+//            DataProvider.i().setCsvLines(stockCode, lineEntryList);
+////            new WeekTransactionHelper(stockCode).start();
+//            new AvgRuleTransactionHelper(stockCode).start();
+//        } else {
+//            Utils.log("Parsed result is null");
+//        }
     }
 
     @NotNull

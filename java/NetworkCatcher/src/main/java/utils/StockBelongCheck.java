@@ -28,6 +28,24 @@ public final class StockBelongCheck {
     private StockBelongCheck() {
     }
 
+    /**
+     * 检查股票代码合法性
+     *
+     * @param stockCode
+     * @return
+     */
+    public static boolean checkLegality(String stockCode) {
+        switch (check(stockCode)) {
+            case SHEN_ZHEN_A:
+            case SHEN_ZHEN_B:
+            case SHANG_HAI_A:
+            case SHANG_HAI_B:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public static ExchangePlace check(@NotNull String stockCode) {
         if (stockCode.length() == 6) {
             for (ExchangePlace place : ExchangePlace.values()) {

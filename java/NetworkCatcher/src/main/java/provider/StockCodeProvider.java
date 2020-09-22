@@ -4,13 +4,16 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import sun.tools.jstat.Literal;
 import utils.StockBelongCheck;
+import utils.TextUtils;
 import utils.Utils;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StockCodeProvider {
 
+    public static final String FILE_NAME_STOCK_LIST = "StockList";
 
     public static final String GONG_SHANG_YIN_HANG = "601398";
     public static final String MEI_DI_JI_TUAN = "000333";
@@ -31,13 +34,38 @@ public class StockCodeProvider {
         return instance;
     }
 
-    public void downloadListFromNet() {
-
-    }
-
     @Nullable
     public List<String> loadStockCodeList() {
-        return null;
+        File file = new File(FILE_NAME_STOCK_LIST);
+        if (!file.exists()) {
+            return null;
+        }
+        List<String> stockCodeList = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String line;
+            while (!TextUtils.isNullOrEmpty(line = reader.readLine())) {
+                String[] content = line.split(",");
+                if (content.length > 1) {
+                    String code = content[0];
+                    if (StockBelongCheck.checkLegality(code)) {
+                        stockCodeList.add(code);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return stockCodeList;
     }
 
     public List<String> createTestStockCodeList() {

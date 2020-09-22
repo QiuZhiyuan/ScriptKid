@@ -1,6 +1,9 @@
 import com.sun.istack.internal.NotNull;
+import provider.StockCodeProvider;
 import statistics.CsvDataHandler;
 import utils.Utils;
+
+import java.util.List;
 
 public class Main {
 
@@ -18,7 +21,11 @@ public class Main {
     }
 
     private void start() {
-        csvHandler.handleStockByCode("601318");
+        List<String> stockCodeList = StockCodeProvider.i().loadStockCodeList();
+//        Utils.log(stockCodeList.toString());
+//        Utils.log(stockCodeList.size() + "");
+        for (String stockCode : stockCodeList) {
+            csvHandler.handleStockByCode(stockCode);
+        }
     }
-
 }

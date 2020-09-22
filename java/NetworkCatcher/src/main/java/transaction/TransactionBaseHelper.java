@@ -93,6 +93,9 @@ public abstract class TransactionBaseHelper {
      * @return 现金+持仓
      */
     public float getTotalValue(ComputeLineEntry entry) {
+        if (entry == null) {
+            return 0;
+        }
         return cashValue + getRemainAmount() * entry.closePrice;
     }
 

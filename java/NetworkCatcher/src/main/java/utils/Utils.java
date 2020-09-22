@@ -13,6 +13,8 @@ public final class Utils {
      */
     public static final float EQUAL_TOLERANCE = 0.0001f;
 
+    public static final int REQUEST_TIME_OUT = 30000;
+
     private static SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private Utils() {

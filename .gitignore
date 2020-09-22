@@ -133,3 +133,6 @@ dmypy.json
 *.class
 *.iml
 *.DS_Store
+
+# DownloadData
+java/NetworkCatcher/StockStorage/

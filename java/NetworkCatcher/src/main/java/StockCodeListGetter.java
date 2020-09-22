@@ -1,4 +1,3 @@
-import base.Callback;
 import entry.StockDailyEntry;
 import internet.StockDataDialog;
 import provider.StockCodeProvider;
@@ -15,7 +14,7 @@ public class StockCodeListGetter {
 
     private final StockDataDialog stockDataDialog;
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         final StockCodeListGetter getter = new StockCodeListGetter();
         getter.start();
     }
@@ -49,7 +48,7 @@ public class StockCodeListGetter {
     private void outputStockCode(List<StockDailyEntry> stockDailyEntries) {
         BufferedWriter bw = null;
         try {
-            File file = new File("StockList");
+            File file = new File(StockCodeProvider.FILE_NAME_STOCK_LIST);
             bw = new BufferedWriter(new FileWriter(file, file.exists()));
             for (StockDailyEntry stock : stockDailyEntries) {
                 bw.write(stock.code + "," + stock.name + "\n");
