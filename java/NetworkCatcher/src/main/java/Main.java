@@ -24,8 +24,10 @@ public class Main {
         List<String> stockCodeList = StockCodeProvider.i().loadStockCodeList();
 //        Utils.log(stockCodeList.toString());
 //        Utils.log(stockCodeList.size() + "");
-        for (String stockCode : stockCodeList) {
-            csvHandler.handleStockByCode(stockCode);
-        }
+//        for (String stockCode : stockCodeList) {
+//            csvHandler.handleStockByCode(stockCode);
+//        }
+        csvHandler.handleStockByCode(StockCodeProvider.MEI_DI_JI_TUAN);
+
     }
 }

@@ -2,7 +2,7 @@ package provider;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import entry.ComputeLineEntry;
+import entry.StockDailyEntry;
 import entry.CsvLineEntry;
 import statistics.ComputeUtils;
 import utils.Utils;
@@ -25,7 +25,7 @@ public class DataProvider {
         return instance;
     }
 
-    private Map<String, List<ComputeLineEntry>> computeResultMap = new HashMap<>();
+    private Map<String, List<StockDailyEntry>> computeResultMap = new HashMap<>();
 
     public void startCompute() {
     }
@@ -33,14 +33,14 @@ public class DataProvider {
     public synchronized void setCsvLines(@NotNull String stockCode, @NotNull List<CsvLineEntry> csvLines) {
         // 按日期升序排列
         csvLines.sort(Comparator.comparing(o -> o.date));
-        computeResultMap.put(stockCode, ComputeUtils.computeAvgs(csvLines));
-        for (ComputeLineEntry entry : computeResultMap.get(stockCode)) {
+        computeResultMap.put(stockCode, ComputeUtils.computeStateAvg(csvLines));
+        for (StockDailyEntry entry : computeResultMap.get(stockCode)) {
             Utils.log(entry.toString());
         }
     }
 
     @Nullable
-    public List<ComputeLineEntry> getComputeLines(String stockCode) {
+    public List<StockDailyEntry> getComputeLines(String stockCode) {
         return new ArrayList<>(computeResultMap.get(stockCode));
     }
 

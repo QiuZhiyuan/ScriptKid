@@ -2,9 +2,8 @@ package internet;
 
 import base.Callback;
 import com.sun.istack.internal.NotNull;
-import entry.StockDailyEntry;
+import entry.StockRealTimeEntry;
 import provider.UrlProvider;
-import utils.Utils;
 
 import java.io.File;
 import java.util.List;
@@ -19,10 +18,10 @@ public class StockDataDialog {
     }
 
 
-    public void getDataFromMoney126(Callback<List<StockDailyEntry>> callback, String... stockCode) {
+    public void getDataFromMoney126(Callback<List<StockRealTimeEntry>> callback, String... stockCode) {
         final String path = UrlProvider.i().getMoney126(stockCode);
         networkManager.sendGet(path, s -> {
-            List<StockDailyEntry> entryList = ResponseParser.parseMoney126(s);
+            List<StockRealTimeEntry> entryList = ResponseParser.parseMoney126(s);
             callback.onCall(entryList);
         });
     }

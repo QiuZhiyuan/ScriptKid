@@ -1,7 +1,7 @@
 package transaction;
 
 import com.sun.istack.internal.Nullable;
-import entry.ComputeLineEntry;
+import entry.StockDailyEntry;
 import entry.TransactionEntry;
 import utils.Utils;
 
@@ -20,7 +20,7 @@ public abstract class TransactionBaseHelper {
 
     protected List<TransactionEntry> transactionList = new ArrayList<>();
 
-    private final List<ComputeLineEntry> computeLineEntryList;
+    private final List<StockDailyEntry> stockDailyEntryList;
 
     // 现金
     protected float cashValue;
@@ -28,7 +28,7 @@ public abstract class TransactionBaseHelper {
     public TransactionBaseHelper(float cashValue, String stockCode) {
         this.cashValue = cashValue;
         this.stockCode = stockCode;
-        this.computeLineEntryList = getComputeLineEntryList();
+        this.stockDailyEntryList = getStockDailyEntryList();
     }
 
     /**
@@ -37,7 +37,7 @@ public abstract class TransactionBaseHelper {
      * @return 现金剩余
      */
     public float buy(int index, float buyRate) {
-        final ComputeLineEntry entry = computeLineEntryList.get(index);
+        final StockDailyEntry entry = stockDailyEntryList.get(index);
         final int amount = Math.round(cashValue * buyRate / entry.closePrice);
         final float value = amount * entry.closePrice;
         final float tax = value * TRANSACTION_TAX_RATE;
@@ -53,7 +53,7 @@ public abstract class TransactionBaseHelper {
      * @return 现金剩余
      */
     public float sell(int index, float sellRate) {
-        final ComputeLineEntry entry = computeLineEntryList.get(index);
+        final StockDailyEntry entry = stockDailyEntryList.get(index);
         final int amount = Math.round(getRemainAmount() * sellRate);
         final float value = entry.closePrice * amount;
         final float tax = value * TRANSACTION_TAX_RATE;
@@ -92,7 +92,7 @@ public abstract class TransactionBaseHelper {
      *
      * @return 现金+持仓
      */
-    public float getTotalValue(ComputeLineEntry entry) {
+    public float getTotalValue(StockDailyEntry entry) {
         if (entry == null) {
             return 0;
         }
@@ -100,15 +100,15 @@ public abstract class TransactionBaseHelper {
     }
 
     @Nullable
-    protected ComputeLineEntry getComputeLineEntry(int index) {
-        if (index < 0 || index >= computeLineEntryList.size()) {
+    protected StockDailyEntry getComputeLineEntry(int index) {
+        if (index < 0 || index >= stockDailyEntryList.size()) {
             return null;
         }
-        return computeLineEntryList.get(index);
+        return stockDailyEntryList.get(index);
     }
 
     protected int getComputeLineSize() {
-        return computeLineEntryList.size();
+        return stockDailyEntryList.size();
     }
 
     protected void logInfo() {
@@ -126,7 +126,7 @@ public abstract class TransactionBaseHelper {
 
     public abstract void start();
 
-    public abstract List<ComputeLineEntry> getComputeLineEntryList();
+    public abstract List<StockDailyEntry> getStockDailyEntryList();
 
     public abstract boolean shouldBuy(int index);
 

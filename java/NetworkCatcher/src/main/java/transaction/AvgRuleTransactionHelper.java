@@ -1,9 +1,8 @@
 package transaction;
 
-import entry.ComputeLineEntry;
+import entry.StockDailyEntry;
 import provider.DataProvider;
 import statistics.TrendHolder;
-import utils.Utils;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class AvgRuleTransactionHelper extends TransactionBaseHelper {
 
     public AvgRuleTransactionHelper(String stockCode) {
         super(cashValue, stockCode);
-        List<ComputeLineEntry> entryList = getComputeLineEntryList();
+        List<StockDailyEntry> entryList = getStockDailyEntryList();
         avg100 = new float[entryList.size()];
         avg350 = new float[entryList.size()];
         for (int i = 0; i < entryList.size(); i++) {
@@ -62,7 +61,7 @@ public class AvgRuleTransactionHelper extends TransactionBaseHelper {
     }
 
     @Override
-    public List<ComputeLineEntry> getComputeLineEntryList() {
+    public List<StockDailyEntry> getStockDailyEntryList() {
         return DataProvider.i().getComputeLines(stockCode);
     }
 
@@ -80,7 +79,7 @@ public class AvgRuleTransactionHelper extends TransactionBaseHelper {
      * 判断是否是日均线的交叉点（上升或下降）
      */
     private boolean isAvgIntersection(int index, TrendHolder.TrendType type1, TrendHolder.TrendType type2) {
-        ComputeLineEntry entry = getComputeLineEntry(index);
+        StockDailyEntry entry = getComputeLineEntry(index);
         if (entry == null) {
             return false;
         }
@@ -94,11 +93,11 @@ public class AvgRuleTransactionHelper extends TransactionBaseHelper {
     }
 
     private boolean isCrossingAvg(int index) {
-        if (index < 1 || index >= getComputeLineEntryList().size() - 1) {
+        if (index < 1 || index >= getStockDailyEntryList().size() - 1) {
             return false;
         }
-        ComputeLineEntry entry1 = getComputeLineEntry(index - 1);
-        ComputeLineEntry entry2 = getComputeLineEntry(index + 1);
+        StockDailyEntry entry1 = getComputeLineEntry(index - 1);
+        StockDailyEntry entry2 = getComputeLineEntry(index + 1);
         return entry1.avgPriceMap.get(AVG_IMPROVE) < entry1.avgPriceMap.get(AVG_BASE) &&
                 entry2.avgPriceMap.get(AVG_IMPROVE) > entry2.avgPriceMap.get(AVG_BASE);
     }

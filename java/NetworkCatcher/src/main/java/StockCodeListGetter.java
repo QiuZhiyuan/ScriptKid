@@ -1,4 +1,4 @@
-import entry.StockDailyEntry;
+import entry.StockRealTimeEntry;
 import internet.StockDataDialog;
 import provider.StockCodeProvider;
 import utils.TextUtils;
@@ -24,7 +24,7 @@ public class StockCodeListGetter {
     }
 
     private void start() {
-        final List<StockDailyEntry> identifiedStockList = new ArrayList<>();
+        final List<StockRealTimeEntry> identifiedStockList = new ArrayList<>();
         List<String> stockCodeList = StockCodeProvider.i().createTestStockCodeList();
         for (int i = 0; i < stockCodeList.size(); ) {
             int p = i;
@@ -33,7 +33,7 @@ public class StockCodeListGetter {
             List<String> subList = stockCodeList.subList(p, q);
             i = q;
             stockDataDialog.getDataFromMoney126(entryList -> {
-                for (StockDailyEntry entry : entryList) {
+                for (StockRealTimeEntry entry : entryList) {
                     if (entry != null && !TextUtils.isNullOrEmpty(entry.code)) {
                         identifiedStockList.add(entry);
                     }
@@ -45,12 +45,12 @@ public class StockCodeListGetter {
         outputStockCode(identifiedStockList);
     }
 
-    private void outputStockCode(List<StockDailyEntry> stockDailyEntries) {
+    private void outputStockCode(List<StockRealTimeEntry> stockDailyEntries) {
         BufferedWriter bw = null;
         try {
             File file = new File(StockCodeProvider.FILE_NAME_STOCK_LIST);
             bw = new BufferedWriter(new FileWriter(file, file.exists()));
-            for (StockDailyEntry stock : stockDailyEntries) {
+            for (StockRealTimeEntry stock : stockDailyEntries) {
                 bw.write(stock.code + "," + stock.name + "\n");
             }
         } catch (IOException e) {

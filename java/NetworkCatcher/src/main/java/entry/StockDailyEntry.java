@@ -1,30 +1,33 @@
 package entry;
 
-import com.sun.istack.internal.NotNull;
+import utils.Utils;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public class StockDailyEntry {
+/**
+ * 计算结果
+ */
+public class StockDailyEntry extends CsvLineEntry {
 
-    @NotNull
-    public final String code;
-    @NotNull
-    public final String name;
-    @NotNull
-    public final String time;
-    @NotNull
-    public final float price;
+    // 阶段性平均值，如5日平均，10日平均，100日平均
+    public final Map<Integer, Float> avgPriceMap = new HashMap<>();
 
-    public StockDailyEntry(@NotNull String code, @NotNull String name, @NotNull String time, @NotNull float price) {
-        this.code = code;
-        this.name = name;
-        this.time = time;
-        this.price = price;
+    public StockDailyEntry(CsvLineEntry entry) {
+        super(entry);
     }
 
+    public StockDailyEntry(StockDailyEntry entry) {
+        super(entry);
+        avgPriceMap.putAll(entry.avgPriceMap);
+    }
 
     @Override
     public String toString() {
-        return "code:" + code + " name:" + name + " time:" + time + " price:" + price;
+        return "ComputeLineEntry{" +
+                "date=" + Utils.dateToString(date) + " " + date.getDay() +
+                ", avgPrice=" + avgPriceMap.toString() +
+                ", price=" + closePrice +
+                '}';
     }
 }

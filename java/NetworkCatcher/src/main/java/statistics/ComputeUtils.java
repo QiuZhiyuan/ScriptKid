@@ -1,6 +1,6 @@
 package statistics;
 
-import entry.ComputeLineEntry;
+import entry.StockDailyEntry;
 import entry.CsvLineEntry;
 import utils.Utils;
 
@@ -15,19 +15,17 @@ public class ComputeUtils {
     /**
      * 计算日平均
      */
-    public static List<ComputeLineEntry> computeAvgs(List<CsvLineEntry> lineEntryList) {
-        long start = System.currentTimeMillis();
-        List<ComputeLineEntry> computeLineEntryList = new ArrayList<>();
+    public static List<StockDailyEntry> computeStateAvg(List<CsvLineEntry> lineEntryList) {
+        List<StockDailyEntry> stockDailyEntryList = new ArrayList<>();
         for (int i = 0; i < lineEntryList.size(); i++) {
-            ComputeLineEntry computeLineEntry = new ComputeLineEntry(lineEntryList.get(i));
+            StockDailyEntry stockDailyEntry = new StockDailyEntry(lineEntryList.get(i));
             for (Integer state : AVG_STATE) {
                 float avg = Utils.formatPrice(getClosePriceAvg(i, state, lineEntryList));
-                computeLineEntry.avgPriceMap.put(state, avg);
+                stockDailyEntry.avgPriceMap.put(state, avg);
             }
-            computeLineEntryList.add(computeLineEntry);
+            stockDailyEntryList.add(stockDailyEntry);
         }
-        Utils.log("Compute duration:" + (System.currentTimeMillis() - start));
-        return computeLineEntryList;
+        return stockDailyEntryList;
     }
 
     private static float getClosePriceAvg(int start, int state, List<CsvLineEntry> lineEntryList) {
