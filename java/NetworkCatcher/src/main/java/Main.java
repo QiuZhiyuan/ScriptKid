@@ -1,6 +1,6 @@
 import com.sun.istack.internal.NotNull;
 import provider.StockCodeProvider;
-import statistics.CsvDataHandler;
+import statistics.StockHandler;
 import utils.Utils;
 
 import java.util.List;
@@ -8,10 +8,10 @@ import java.util.List;
 public class Main {
 
     @NotNull
-    private final CsvDataHandler csvHandler;
+    private final StockHandler csvHandler;
 
     private Main() {
-        csvHandler = new CsvDataHandler();
+        csvHandler = new StockHandler();
     }
 
     public static void main(String[] args) {
@@ -22,12 +22,11 @@ public class Main {
 
     private void start() {
         List<String> stockCodeList = StockCodeProvider.i().loadStockCodeList();
-//        Utils.log(stockCodeList.toString());
-//        Utils.log(stockCodeList.size() + "");
-//        for (String stockCode : stockCodeList) {
-//            csvHandler.handleStockByCode(stockCode);
-//        }
-        csvHandler.handleStockByCode(StockCodeProvider.MEI_DI_JI_TUAN);
+        Utils.log(stockCodeList.size() + "");
+        for (String stockCode : stockCodeList) {
+            csvHandler.handleStockByCode(stockCode);
+        }
+//        csvHandler.handleStockByCode(StockCodeProvider.MEI_DI_JI_TUAN);
 
     }
 }

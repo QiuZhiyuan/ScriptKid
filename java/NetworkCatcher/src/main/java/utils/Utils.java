@@ -12,12 +12,20 @@ public final class Utils {
      * 相等误差（在误差范围内即认为相等）
      */
     public static final float EQUAL_TOLERANCE = 0.0001f;
-
     public static final int REQUEST_TIME_OUT = 30000;
+    public static final String START_DATE = "19000101";
+    public static final String END_DATE = "20200912";
 
     private static SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private Utils() {
+    }
+
+    public static boolean equals(Object obj1, Object obj2) {
+        if (obj1 != null) {
+            return obj1.equals(obj2);
+        }
+        return obj2 == null;
     }
 
     public static void log(@NotNull String msg) {

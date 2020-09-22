@@ -1,7 +1,7 @@
 package transaction;
 
 import entry.StockDailyEntry;
-import provider.DataProvider;
+import provider.StockDataProvider;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class WeekTransactionHelper extends TransactionBaseHelper {
 
     @Override
     public List<StockDailyEntry> getStockDailyEntryList() {
-        return DataProvider.i().getComputeLines(stockCode);
+        return StockDataProvider.i().getStockDailyEntry(stockCode);
     }
 
     @Override

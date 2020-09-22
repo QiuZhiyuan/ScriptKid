@@ -1,51 +1,53 @@
-package statistics;
+package provider;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import entry.CsvLineEntry;
+import entry.StockDailyEntry;
 import internet.StockDataDialog;
-import provider.DataProvider;
-import transaction.AvgRuleTransactionHelper;
-import transaction.WeekTransactionHelper;
+import statistics.ComputeUtils;
+import utils.CollectionUtils;
 import utils.Utils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class CsvDataHandler {
-
+/**
+ * 从文件中读取每日数据，如果没有则从网络上下载
+ * TODO 判断文件创建时间与更新时间，如果有修改历史则重新下载
+ * TODO 同一股票代码，不同日期拼接功能，下载新日期数据与旧日期数据拼接
+ */
+public class CsvFileReader {
     private static final String STORE_PATH = "StockStorage/";
-    private static final String START_DATE = "19000101";
-    private static final String END_DATE = "20200912";
-
 
     private final StockDataDialog downloader;
 
-    public CsvDataHandler() {
+    public CsvFileReader() {
         downloader = new StockDataDialog();
     }
 
-    @NotNull
-    public void handleStockByCode(@NotNull final String stockCode) {
-        Utils.log("Start handle stock code" + stockCode);
-        File file = getStoreFile(createFileName(stockCode, END_DATE));
+    @Nullable
+    public List<StockDailyEntry> getStockDataFromFile(String stockCode, String endDate) {
+        File file = getStoreFile(createFileName(stockCode, endDate));
         if (shouldDownloadFile(file)) {
-            downloader.getDataFromMoney163(stockCode, START_DATE, END_DATE, file);
+            downloader.getDataFromMoney163(stockCode, Utils.START_DATE, endDate, file);
         } else {
             Utils.log(file.getName() + " is exist");
         }
-
         List<CsvLineEntry> lineEntryList = parseCsvFile(file);
-        if (lineEntryList != null) {
-            Utils.log("Parsed:" + lineEntryList.size());
-//            Utils.log(lineEntryList.get(0).toString());
-            DataProvider.i().setCsvLines(stockCode, lineEntryList);
-//            new WeekTransactionHelper(stockCode).start();
-            new AvgRuleTransactionHelper(stockCode).start();
+        if (!CollectionUtils.isNullOrEmptry(lineEntryList)) {
+            return doCompute(lineEntryList);
         } else {
-            Utils.log("Parsed result is null");
+            return null;
         }
+    }
+
+    private List<StockDailyEntry> doCompute(List<CsvLineEntry> lineEntryList) {
+        // 按日期升序排列
+        lineEntryList.sort(Comparator.comparing(o -> o.date));
+        return ComputeUtils.computeStateAvg(lineEntryList);
     }
 
     @NotNull
@@ -62,9 +64,9 @@ public class CsvDataHandler {
     }
 
     private boolean shouldDownloadFile(@NotNull File file) {
-        // TODO 判断文件创建时间与更新时间，如果有修改历史则重新下载
         return !file.exists();
     }
+
 
     @Nullable
     private List<CsvLineEntry> parseCsvFile(@NotNull File file) {

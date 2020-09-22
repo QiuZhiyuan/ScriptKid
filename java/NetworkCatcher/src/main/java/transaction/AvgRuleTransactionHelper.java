@@ -1,7 +1,7 @@
 package transaction;
 
 import entry.StockDailyEntry;
-import provider.DataProvider;
+import provider.StockDataProvider;
 import statistics.TrendHolder;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class AvgRuleTransactionHelper extends TransactionBaseHelper {
 
     @Override
     public List<StockDailyEntry> getStockDailyEntryList() {
-        return DataProvider.i().getComputeLines(stockCode);
+        return StockDataProvider.i().getStockDailyEntry(stockCode);
     }
 
     @Override
