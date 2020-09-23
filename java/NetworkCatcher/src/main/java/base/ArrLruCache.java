@@ -2,6 +2,8 @@ package base;
 
 import utils.Utils;
 
+import java.util.Arrays;
+
 public abstract class ArrLruCache<K, E> {
 
     private E[] entries = null;
@@ -20,6 +22,8 @@ public abstract class ArrLruCache<K, E> {
 
     protected abstract E createEntry(K k);
 
+    protected abstract void recycleEntry(K k, E e);
+
     public E fromKey(K k) {
         if (k == null) {
             return null;
@@ -32,28 +36,43 @@ public abstract class ArrLruCache<K, E> {
             keys = (K[]) objs2;
         }
         int index = 0;
-        for (int i = 0; i < size; i++) {
-            index = i;
-            if (Utils.equals(keys[i], k)) {
-                e = entries[i];
+        while (index < size) {
+            if (Utils.equals(keys[index], k)) {
+                e = entries[index];
+                index++;
                 break;
             }
+            index++;
         }
+        K recycleK = null;
+        E recycleE = null;
         if (e == null) {
             e = createEntry(k);
+            recycleK = keys[size - 1];
+            recycleE = entries[size - 1];
         }
-        if (e != null) {
-            moveToFront(k, e, index);
+        moveToFront(k, e, index);
+        if (recycleE != null && recycleK != null) {
+            recycleEntry(recycleK, recycleE);
         }
         return e;
     }
 
     private void moveToFront(K k, E e, int index) {
+        for (int i = index - 1; i > 0; i--) {
+            keys[i] = keys[i - 1];
+            entries[i] = entries[i - 1];
+        }
         keys[0] = k;
         entries[0] = e;
-        for (int i = 1; i < index - 1; i++) {
-            keys[i + 1] = keys[i];
-            entries[i + 1] = entries[i];
-        }
+    }
+
+    @Override
+    public String toString() {
+        return "ArrLruCache{" +
+                "entries=" + Arrays.toString(entries) +
+                ", keys=" + Arrays.toString(keys) +
+                ", size=" + size +
+                '}';
     }
 }

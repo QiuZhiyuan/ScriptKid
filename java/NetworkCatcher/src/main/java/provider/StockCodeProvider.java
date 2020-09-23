@@ -2,7 +2,6 @@ package provider;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import sun.tools.jstat.Literal;
 import utils.StockBelongCheck;
 import utils.TextUtils;
 import utils.Utils;
@@ -51,6 +50,8 @@ public class StockCodeProvider {
                     String code = content[0];
                     if (StockBelongCheck.checkLegality(code)) {
                         stockCodeList.add(code);
+                    } else {
+                        Utils.log("Unsupported stock code:" + code);
                     }
                 }
             }

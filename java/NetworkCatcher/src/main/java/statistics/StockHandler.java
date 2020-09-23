@@ -20,7 +20,7 @@ public class StockHandler {
         List<StockDailyEntry> dailyEntryList = StockDataProvider.i().getStockDailyEntry(stockCode);
         if (dailyEntryList != null) {
             Utils.log("Get from provider:" + dailyEntryList.size());
-            Utils.log(dailyEntryList.get(0).toString());
+//            Utils.log(dailyEntryList.get(0).toString());
 //            new WeekTransactionHelper(stockCode).start();
 //            new AvgRuleTransactionHelper(stockCode).start();
         } else {

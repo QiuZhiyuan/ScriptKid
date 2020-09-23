@@ -1,3 +1,4 @@
+import base.ArrLruCache;
 import com.sun.istack.internal.NotNull;
 import provider.StockCodeProvider;
 import statistics.StockHandler;
@@ -21,12 +22,11 @@ public class Main {
     }
 
     private void start() {
-        List<String> stockCodeList = StockCodeProvider.i().loadStockCodeList();
-        Utils.log(stockCodeList.size() + "");
-        for (String stockCode : stockCodeList) {
-            csvHandler.handleStockByCode(stockCode);
-        }
-//        csvHandler.handleStockByCode(StockCodeProvider.MEI_DI_JI_TUAN);
-
+//        List<String> stockCodeList = StockCodeProvider.i().loadStockCodeList();
+//        Utils.log(stockCodeList.size() + "");
+//        for (String stockCode : stockCodeList) {
+//            csvHandler.handleStockByCode(stockCode);
+//        }
+        csvHandler.handleStockByCode(StockCodeProvider.MEI_DI_JI_TUAN);
     }
 }

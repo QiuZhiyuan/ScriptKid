@@ -18,4 +18,9 @@ public class StockLruCache extends ArrLruCache<String, List<StockDailyEntry>> {
     protected List<StockDailyEntry> createEntry(String stockCode) {
         return fileReader.getStockDataFromFile(stockCode, Utils.END_DATE);
     }
+
+    @Override
+    protected void recycleEntry(String s, List<StockDailyEntry> stockDailyEntries) {
+
+    }
 }
