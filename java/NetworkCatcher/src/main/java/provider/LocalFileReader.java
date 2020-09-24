@@ -44,6 +44,11 @@ public class LocalFileReader {
         }
     }
 
+    /**
+     * 对数据进行初步计算
+     * @param lineEntryList
+     * @return
+     */
     private List<StockDailyEntry> doCompute(List<StockDailyEntry> lineEntryList) {
         // 按日期升序排列
         lineEntryList.sort(Comparator.comparing(o -> o.date));

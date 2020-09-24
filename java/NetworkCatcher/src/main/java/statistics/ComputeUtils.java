@@ -1,10 +1,8 @@
 package statistics;
 
 import entry.StockDailyEntry;
-import entry.CsvLineEntry;
 import utils.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ComputeUtils {
@@ -16,17 +14,14 @@ public class ComputeUtils {
      * 计算日平均
      */
     public static List<StockDailyEntry> computeStateAvg(List<StockDailyEntry> lineEntryList) {
-        List<StockDailyEntry> stockDailyEntryList = new ArrayList<>();
         for (int i = 0; i < lineEntryList.size(); i++) {
-            StockDailyEntry stockDailyEntry = new StockDailyEntry(lineEntryList.get(i));
-            stockDailyEntry.avgPriceMap.clear();
+            lineEntryList.get(i).avgPriceMap.clear();
             for (Integer state : AVG_STATE) {
                 float avg = Utils.formatPrice(getClosePriceAvg(i, state, lineEntryList));
-                stockDailyEntry.avgPriceMap.put(state, avg);
+                lineEntryList.get(i).avgPriceMap.put(state, avg);
             }
-            stockDailyEntryList.add(stockDailyEntry);
         }
-        return stockDailyEntryList;
+        return lineEntryList;
     }
 
     private static float getClosePriceAvg(int start, int state, List<StockDailyEntry> lineEntryList) {

@@ -6,10 +6,10 @@ import utils.Utils;
 
 import java.util.List;
 
-public class StockLruCache extends ArrLruCache<String, List<StockDailyEntry>> {
+public class DailyDataLruCache extends ArrLruCache<String, List<StockDailyEntry>> {
     private final LocalFileReader fileReader;
 
-    public StockLruCache(int i) {
+    public DailyDataLruCache(int i) {
         super(i);
         fileReader = new LocalFileReader();
     }

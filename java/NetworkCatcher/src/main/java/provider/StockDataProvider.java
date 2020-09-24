@@ -22,8 +22,7 @@ public class StockDataProvider {
         return instance;
     }
 
-
-    private final StockLruCache lruCache = new StockLruCache(CACHE_MAX_SIZE);
+    private final DailyDataLruCache lruCache = new DailyDataLruCache(CACHE_MAX_SIZE);
 
     @Nullable
     public List<StockDailyEntry> getStockDailyEntry(String stockCode) {
