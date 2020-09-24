@@ -19,12 +19,12 @@ import java.util.List;
  * TODO 判断文件创建时间与更新时间，如果有修改历史则重新下载
  * TODO 同一股票代码，不同日期拼接功能，下载新日期数据与旧日期数据拼接
  */
-public class CsvFileReader {
+public class LocalFileReader {
     private static final String STORE_PATH = "StockStorage/";
 
     private final StockDataDialog downloader;
 
-    public CsvFileReader() {
+    public LocalFileReader() {
         downloader = new StockDataDialog();
     }
 
@@ -36,7 +36,7 @@ public class CsvFileReader {
         } else {
             Utils.log(file.getName() + " is exist");
         }
-        List<CsvLineEntry> lineEntryList = parseCsvFile(file);
+        List<StockDailyEntry> lineEntryList = parseCsvFile(file);
         if (!CollectionUtils.isNullOrEmptry(lineEntryList)) {
             return doCompute(lineEntryList);
         } else {
@@ -44,7 +44,7 @@ public class CsvFileReader {
         }
     }
 
-    private List<StockDailyEntry> doCompute(List<CsvLineEntry> lineEntryList) {
+    private List<StockDailyEntry> doCompute(List<StockDailyEntry> lineEntryList) {
         // 按日期升序排列
         lineEntryList.sort(Comparator.comparing(o -> o.date));
         return ComputeUtils.computeStateAvg(lineEntryList);
@@ -69,17 +69,17 @@ public class CsvFileReader {
 
 
     @Nullable
-    private List<CsvLineEntry> parseCsvFile(@NotNull File file) {
+    private List<StockDailyEntry> parseCsvFile(@NotNull File file) {
         if (!file.exists()) {
             return null;
         }
-        List<CsvLineEntry> entryList = new ArrayList<CsvLineEntry>();
+        List<StockDailyEntry> entryList = new ArrayList<>();
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "GB18030"));
             String line;
             while ((line = br.readLine()) != null) {
-                CsvLineEntry entry = CsvLineEntry.fromCsvLine(line);
+                StockDailyEntry entry = StockDailyEntry.fromCsvLine(line);
                 if (entry != null) {
                     entryList.add(entry);
                 }

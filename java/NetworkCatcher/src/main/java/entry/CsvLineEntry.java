@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Parsed from csv file lines which downloaded from http://quotes.money.163.com/service/chddata.html?
  */
-public class CsvLineEntry {
+public abstract class CsvLineEntry {
 
     private static final String TAG = CsvLineEntry.class.getSimpleName();
 
@@ -120,7 +120,7 @@ public class CsvLineEntry {
     }
 
     @Nullable
-    public static CsvLineEntry fromCsvLine(@NotNull String line) {
+    public static StockDailyEntry fromCsvLine(@NotNull String line) {
         String[] elements = line.split(",");
         try {
             Date date = Utils.parseFromStr(elements[0]);
@@ -142,7 +142,7 @@ public class CsvLineEntry {
 //                Utils.log(line);
                 return null;
             }
-            return new CsvLineEntry(date, code, name, closePrice, highPrice, lowPrice, openPrice, beforeClosePrice,
+            return new StockDailyEntry(date, code, name, closePrice, highPrice, lowPrice, openPrice, beforeClosePrice,
                     upAndDownPrice, upAndDownPercent, turnoverRate, doneVolume, donePrice, totalMarketCap,
                     circulationMarketValue);
 
