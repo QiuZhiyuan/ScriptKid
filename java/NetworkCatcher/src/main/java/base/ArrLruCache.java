@@ -20,9 +20,9 @@ public abstract class ArrLruCache<K, E> {
         return size;
     }
 
-    protected abstract E createEntry(K k);
+    protected abstract E createEntry(K key);
 
-    protected abstract void recycleEntry(K k, E e);
+    protected abstract void recycleEntry(K key, E entry);
 
     public E fromKey(K k) {
         if (k == null) {
@@ -39,10 +39,11 @@ public abstract class ArrLruCache<K, E> {
         while (index < size) {
             if (Utils.equals(keys[index], k)) {
                 e = entries[index];
-                index++;
-                break;
             }
             index++;
+            if (e != null) {
+                break;
+            }
         }
         K recycleK = null;
         E recycleE = null;

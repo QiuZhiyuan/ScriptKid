@@ -20,7 +20,7 @@ public class StockLruCache extends ArrLruCache<String, List<StockDailyEntry>> {
     }
 
     @Override
-    protected void recycleEntry(String s, List<StockDailyEntry> stockDailyEntries) {
+    protected void recycleEntry(String stockCode, List<StockDailyEntry> stockDailyEntries) {
 
     }
 }

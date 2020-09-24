@@ -1,10 +1,7 @@
-import base.ArrLruCache;
 import com.sun.istack.internal.NotNull;
 import provider.StockCodeProvider;
 import statistics.StockHandler;
 import utils.Utils;
-
-import java.util.List;
 
 public class Main {
 
