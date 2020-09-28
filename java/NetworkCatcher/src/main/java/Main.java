@@ -24,6 +24,8 @@ public class Main {
 //        for (String stockCode : stockCodeList) {
 //            csvHandler.handleStockByCode(stockCode);
 //        }
+        long startTime = System.currentTimeMillis();
         csvHandler.handleStockByCode(StockCodeProvider.MEI_DI_JI_TUAN);
+        Utils.log("Total cost time:" + (System.currentTimeMillis() - startTime));
     }
 }

@@ -2,7 +2,6 @@ package provider;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import entry.CsvLineEntry;
 import entry.StockDailyEntry;
 import internet.StockDataDialog;
 import statistics.ComputeUtils;
@@ -17,7 +16,6 @@ import java.util.List;
 /**
  * 从文件中读取每日数据，如果没有则从网络上下载
  * TODO 判断文件创建时间与更新时间，如果有修改历史则重新下载
- * TODO 同一股票代码，不同日期拼接功能，下载新日期数据与旧日期数据拼接
  */
 public class LocalFileReader {
     private static final String STORE_PATH = "StockStorage/";
@@ -31,7 +29,7 @@ public class LocalFileReader {
     @Nullable
     public List<StockDailyEntry> getStockDataFromFile(String stockCode, String endDate) {
         File file = getStoreFile(createFileName(stockCode, endDate));
-        if (shouldDownloadFile(file)) {
+        if (shouldDownloadFile(stockCode, file)) {
             downloader.getDataFromMoney163(stockCode, Utils.START_DATE, endDate, file);
         } else {
             Utils.log(file.getName() + " is exist");
@@ -46,6 +44,7 @@ public class LocalFileReader {
 
     /**
      * 对数据进行初步计算
+     *
      * @param lineEntryList
      * @return
      */
@@ -68,10 +67,22 @@ public class LocalFileReader {
         return stockCode + "-" + endDate + ".csv";
     }
 
-    private boolean shouldDownloadFile(@NotNull File file) {
-        return !file.exists();
+    private boolean shouldDownloadFile(final @NotNull String stockCode, @NotNull File file) {
+        if (file.exists()) {
+            return false;
+        }
+        File parentFile = file.getParentFile();
+        if (parentFile != null && parentFile.isDirectory()) {
+            File[] fileList = parentFile.listFiles((dir, name) -> name.startsWith(stockCode));
+            if (fileList != null && fileList.length > 0) {
+                for (File item : fileList) {
+                    item.delete();
+                    Utils.log("Delete file:" + item.getName());
+                }
+            }
+        }
+        return true;
     }
-
 
     @Nullable
     private List<StockDailyEntry> parseCsvFile(@NotNull File file) {

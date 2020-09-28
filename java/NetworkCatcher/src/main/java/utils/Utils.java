@@ -14,7 +14,7 @@ public final class Utils {
     public static final float EQUAL_TOLERANCE = 0.0001f;
     public static final int REQUEST_TIME_OUT = 30000;
     public static final String START_DATE = "19000101";
-    public static final String END_DATE = "20200912";
+    public static final String END_DATE = "20200927";
 
     private static SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
